@@ -1,7 +1,68 @@
 ---
 # tasks file for ansible-tower-setup
 
-- name: do something else
-  ping:
-  tags:
-    - differenttag
+- name: download ansible latest setup
+  get_url:
+    url: https://releases.ansible.com/ansible-tower/setup/ansible-tower-setup-latest.tar.gz
+    dest: "{{ role_path }}/files/ansible-tower-setup-latest.tar.gz"
+    mode: 0440
+  
+- name: unpack ansible tower install tar
+  unarchive:
+    src: "{{ role_path }}/files/tower_setup/ansible-tower-setup-latest.tar.gz"
+    dest: "{{ role_path }}/files/tower_setup/"
+  delegate_to: "{{ tower_proxy_vm_ip }}"
+
+- name: get info of ansible setup dir
+  find:
+    paths: "{{ role_path }}/files/tower_setup"
+    recurse: no
+    file_type: directory
+  register: setupdir_output
+
+- debug:
+    msg: "tower install dir is {{ setupdir_output.files[0].path }}"
+
+- name: place inventory file
+  template:
+    src: tower_config.j2
+    dest: "{{ setupdir_output.files[0].path }}/inventory"
+    mode: '0644'
+
+- name: place dev trust cert
+  template:
+    src: dev-ansible-tower-trust.crt.j2
+    dest: /root/ansible-tower-trust.crt
+    mode: '0644'
+  when: tower_environment is "dev"
+
+- name: place prod trust cert
+  template:
+    src: prod-ansible-tower-trust.crt.j2
+    dest: /root/ansible-tower-trust.crt
+    mode: '0644'
+  when: tower_environment is "prod"
+
+- name: place dev tower cert
+  template:
+    src: dev-tower.cert.j2
+    dest: /root/tower.cert
+    mode: '0644'
+  when: tower_environment is "dev"
+
+- name: place prod tower cert
+  template:
+    src: prod-tower.cert.j2
+    dest: /root/tower.cert
+    mode: '0644'
+  when: tower_environment is "prod"
+
+- name: place dev tower key
+  template:
+    src: dev-tower.key.j2
+    dest: /root/tower.key
+    mode: '0644'
+  when: tower_environment is "dev"
+# - name: run setup script
+#   script: "{{ setupdir_output.files[0].path }}/setup.sh"
+#   become: yes

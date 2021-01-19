@@ -1,2 +1,6 @@
 ---
 # defaults file for ansible-tower-setup
+tower_cluster_ip_list:
+  - "10.73.6.22"
+  - "10.73.6.23"
+  - "10.73.6.24"
