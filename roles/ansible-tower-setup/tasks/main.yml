@@ -2,26 +2,43 @@
 # tasks file for ansible-tower-setup
 - include_vars: vault.yml
 
+- name: Set authorized key in main node
+  authorized_key:
+    user: root
+    state: present
+    key: "{{ lookup('file', '~/.ssh/automateit_id_rsa.pub') }}"
+
+- name: Set authorized key in cluster nodes
+  authorized_key:
+    user: root
+    state: present
+    key: "{{ lookup('file', '~/.ssh/automateit_id_rsa.pub') }}"
+  delegate_to: "{{ item }}"
+  delegate_facts: true
+  loop: "{{ groups['cluster_nodes'] }}"
+
 - name: Create a tower_setup directory
   file:
-    path: "{{ role_path }}/files/tower_setup"
+    path: /tmp/tower_setup
     state: directory
     mode: '0755'
 
 - name: download ansible latest setup
   get_url:
     url: https://releases.ansible.com/ansible-tower/setup/ansible-tower-setup-latest.tar.gz
-    dest: "{{ role_path }}/files/tower_setup/ansible-tower-setup-latest.tar.gz"
+    dest: /tmp/tower_setup/ansible-tower-setup-latest.tar.gz
     mode: 0440
   
 - name: unpack ansible tower install tar
   unarchive:
-    src: "{{ role_path }}/files/tower_setup/ansible-tower-setup-latest.tar.gz"
-    dest: "{{ role_path }}/files/tower_setup/"
+    src: /tmp/tower_setup/ansible-tower-setup-latest.tar.gz
+    dest: /tmp/tower_setup/
+    owner: "{{ admin_user }}"
+    remote_src: yes
 
 - name: get info of ansible setup dir
   find:
-    paths: "{{ role_path }}/files/tower_setup"
+    paths: /tmp/tower_setup
     recurse: no
     file_type: directory
   register: setupdir_output
@@ -33,6 +50,7 @@
   template:
     src: tower_config.j2
     dest: "{{ setupdir_output.files[0].path }}/inventory"
+    owner: "{{ admin_user }}"
     mode: '0644'
 
 - name: place dev trust cert
@@ -75,12 +93,14 @@
     src: automateit_id_rsa.pub.j2
     dest: /root/.ssh/id_rsa.pub
     mode: '0400'
+    owner: "{{ admin_user }}"
 
 - name: place automateit private ssh key
   template:
     src: automateit_id_rsa.j2
     dest: /root/.ssh/id_rsa
     mode: '0400'
+    owner: "{{ admin_user }}"
 
 # - name: run setup script
 #   script: "{{ setupdir_output.files[0].path }}/setup.sh"

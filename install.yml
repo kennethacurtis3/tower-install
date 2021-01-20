@@ -1,6 +1,6 @@
 ---
 - name: set up local dir for tower install
-  hosts: localhost
+  hosts: main_node
   become: yes
   tasks:
   - include_role: 
