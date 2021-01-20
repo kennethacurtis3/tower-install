@@ -1,6 +1,12 @@
 ---
 # tasks file for ansible-tower-setup
 
+- name: Create a tower_setup directory
+  file:
+    path: "{{ role_path }}/files/tower_setup"
+    state: directory
+    mode: '0755'
+
 - name: download ansible latest setup
   get_url:
     url: https://releases.ansible.com/ansible-tower/setup/ansible-tower-setup-latest.tar.gz
