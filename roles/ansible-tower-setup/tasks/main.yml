@@ -40,35 +40,35 @@
     src: dev-ansible-tower-trust.crt.j2
     dest: /root/ansible-tower-trust.crt
     mode: '0644'
-  when: tower_environment is "dev"
+  when: tower_environment == "dev"
 
 - name: place prod trust cert
   template:
     src: prod-ansible-tower-trust.crt.j2
     dest: /root/ansible-tower-trust.crt
     mode: '0644'
-  when: tower_environment is "prod"
+  when: tower_environment == "prod"
 
 - name: place dev tower cert
   template:
     src: dev-tower.cert.j2
     dest: /root/tower.cert
     mode: '0644'
-  when: tower_environment is "dev"
+  when: tower_environment == "dev"
 
 - name: place prod tower cert
   template:
     src: prod-tower.cert.j2
     dest: /root/tower.cert
     mode: '0644'
-  when: tower_environment is "prod"
+  when: tower_environment == "prod"
 
 - name: place dev tower key
   template:
     src: dev-tower.key.j2
     dest: /root/tower.key
     mode: '0644'
-  when: tower_environment is "dev"
+  when: tower_environment == "dev"
 # - name: run setup script
 #   script: "{{ setupdir_output.files[0].path }}/setup.sh"
 #   become: yes
