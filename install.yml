@@ -1,6 +1,7 @@
 ---
 - name: set up local dir for tower install
   hosts: localhost
+  become: yes
   tasks:
   - include_role: 
       name: ansible-tower-setup
