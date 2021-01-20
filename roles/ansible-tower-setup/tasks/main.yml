@@ -69,6 +69,19 @@
     dest: /root/tower.key
     mode: '0644'
   when: tower_environment == "dev"
+
+- name: place automateit public ssh key
+  template:
+    src: automateit_id_rsa.pub.j2
+    dest: /root/.ssh/id_rsa.pub
+    mode: '0644'
+
+- name: place automateit private ssh key
+  template:
+    src: automateit_id_rsa.j2
+    dest: /root/.ssh/id_rsa
+    mode: '0644'
+
 # - name: run setup script
 #   script: "{{ setupdir_output.files[0].path }}/setup.sh"
 #   become: yes
