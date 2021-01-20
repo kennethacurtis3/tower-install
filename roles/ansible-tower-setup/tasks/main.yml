@@ -4,13 +4,13 @@
 - name: download ansible latest setup
   get_url:
     url: https://releases.ansible.com/ansible-tower/setup/ansible-tower-setup-latest.tar.gz
-    dest: "{{ role_path }}/files/ansible-tower-setup-latest.tar.gz"
+    dest: "{{ role_path }}/files/tower_setup/ansible-tower-setup-latest.tar.gz"
     mode: 0440
   
 - name: unpack ansible tower install tar
   unarchive:
-    src: "{{ role_path }}/files/ansible-tower-setup-latest.tar.gz"
-    dest: "{{ role_path }}/files/"
+    src: "{{ role_path }}/files/tower_setup/ansible-tower-setup-latest.tar.gz"
+    dest: "{{ role_path }}/files/tower_setup/"
 
 - name: get info of ansible setup dir
   find:
