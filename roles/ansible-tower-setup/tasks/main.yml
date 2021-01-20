@@ -1,5 +1,6 @@
 ---
 # tasks file for ansible-tower-setup
+- include_vars: vault.yml
 
 - name: Create a tower_setup directory
   file:
