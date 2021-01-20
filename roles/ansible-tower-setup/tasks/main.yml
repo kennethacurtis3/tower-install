@@ -10,7 +10,7 @@
 - name: unpack ansible tower install tar
   unarchive:
     src: "{{ role_path }}/files/ansible-tower-setup-latest.tar.gz"
-    dest: "{{ role_path }}/files/tower_setup/"
+    dest: "{{ role_path }}/files/"
 
 - name: get info of ansible setup dir
   find:
