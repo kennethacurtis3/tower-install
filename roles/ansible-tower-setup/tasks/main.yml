@@ -11,7 +11,6 @@
   unarchive:
     src: "{{ role_path }}/files/tower_setup/ansible-tower-setup-latest.tar.gz"
     dest: "{{ role_path }}/files/tower_setup/"
-  delegate_to: "{{ tower_proxy_vm_ip }}"
 
 - name: get info of ansible setup dir
   find:
