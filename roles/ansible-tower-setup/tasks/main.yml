@@ -101,7 +101,3 @@
     dest: /root/.ssh/id_rsa
     mode: '0400'
     owner: "{{ admin_user }}"
-
-# - name: run setup script
-#   script: "{{ setupdir_output.files[0].path }}/setup.sh"
-#   become: yes
