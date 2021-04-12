@@ -88,6 +88,13 @@
     mode: '0644'
   when: tower_environment == "dev"
 
+- name: place prod tower key
+  template:
+    src: prod-tower.key.j2
+    dest: /root/tower.key
+    mode: '0644'
+  when: tower_environment == "prod"
+
 - name: place automateit public ssh key
   template:
     src: automateit_id_rsa.pub.j2

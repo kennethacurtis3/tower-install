@@ -17,7 +17,7 @@ admin_password='{{ admin_password }}'
 pg_host='cfes-hub-ansible-tower.postgres.database.azure.com'
 pg_port='5432'
 
-pg_database={% if tower_environment == 'dev' %}'hub_awx_tower_development'{% else %}'hub_awx_tower_production'{% endif %}
+pg_database={% if tower_environment == 'dev' %}'awx_dev_azure_cluster'{% else %}'hub_awx_tower_production'{% endif %}
 
 pg_username='automateit@cfes-hub-ansible-tower'
 pg_password='{{ admin_password }}'
