@@ -25,7 +25,7 @@
 
 - name: download ansible latest setup
   get_url:
-    url: https://releases.ansible.com/ansible-tower/setup/ansible-tower-setup-latest.tar.gz
+    url: https://releases.ansible.com/ansible-tower/setup-bundle/ansible-tower-setup-bundle-3.8.2-1.tar.gz
     dest: /tmp/tower_setup/ansible-tower-setup-latest.tar.gz
     mode: 0440
   
@@ -108,3 +108,16 @@
     dest: /root/.ssh/id_rsa
     mode: '0400'
     owner: "{{ admin_user }}"
+
+- name: Create a tower directory
+  file:
+    path: /etc/tower
+    state: directory
+    mode: '0755'
+
+- name: place prod db key
+  template:
+    src: prod-secret-key.j2
+    dest: /etc/tower/SECRET_KEY
+    mode: '0644'
+  when: tower_environment == "prod"

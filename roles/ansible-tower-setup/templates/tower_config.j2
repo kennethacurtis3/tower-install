@@ -11,13 +11,38 @@
 
 [database]
 
+[isolated_group_techlab]
+10.111.246.22
+
+[isolated_group_techlab:vars]
+controller=tower
+
+[isolated_group_azure]
+10.73.6.25
+
+[isolated_group_azure:vars]
+controller=tower
+
+#[isolated_group_onpremprod]
+#louapplpa652 ansible_host=10.97.38.225
+
+#[isolated_group_onpremprod:vars]
+#controller=tower
+
+[isolated_group_onpremdev]
+louapplta27 ansible_host=10.114.35.192
+louapplta28 ansible_host=10.114.35.193
+
+[isolated_group_onpremdev:vars]
+controller=tower
+
 [all:vars]
 admin_password='{{ admin_password }}'
 
 pg_host='cfes-hub-ansible-tower.postgres.database.azure.com'
 pg_port='5432'
 
-pg_database={% if tower_environment == 'dev' %}'awx_dev_azure_cluster'{% else %}'hub_awx_tower_production'{% endif %}
+pg_database={% if tower_environment == 'dev' %}'awx_dev_azure_cluster_migration_test'{% else %}'tower_production'{% endif %}
 
 pg_username='automateit@cfes-hub-ansible-tower'
 pg_password='{{ admin_password }}'
