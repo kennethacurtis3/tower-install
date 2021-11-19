@@ -1,10 +1,7 @@
 [main_node]
-10.73.6.15
+dev_tower_server_01 ansible_port=17938 ansible_host=127.0.0.1
 
 [cluster_nodes]
-10.73.6.16
-10.73.6.17
+dev_tower_server_02 ansible_port=26541 ansible_host=127.0.0.1
+dev_tower_server_03 ansible_port=16322 ansible_host=127.0.0.1
 
-[all:vars]
-ansible_user=automateit
-ansible_ssh_private_key_file=~/.ssh/automateit_id_rsa
