@@ -18,44 +18,6 @@
   delegate_facts: true
   loop: "{{ groups['cluster_nodes'] }}"
 
-- name: Create a tower_setup directory
-  file:
-    path: /tmp/tower_setup
-    state: directory
-    mode: '0755'
-
-- name: download ansible latest setup
-  get_url:
-    url: "{{ download_url }}"
-    dest: /tmp/tower_setup/ansible-tower-setup-latest.tar.gz
-    mode: 0440
-    validate_certs: no
-  
-- name: unpack ansible tower install tar
-  unarchive:
-    src: /tmp/tower_setup/ansible-tower-setup-latest.tar.gz
-    dest: /tmp/tower_setup/
-    owner: "{{ admin_user }}"
-    remote_src: yes
-
-- name: get info of ansible setup dir
-  find:
-    paths: /tmp/tower_setup
-    recurse: no
-    file_type: directory
-  register: setupdir_output
-
-- name: print out tower install dir
-  debug:
-    msg: "tower install dir is {{ setupdir_output.files[0].path }}"
-
-- name: place inventory file
-  template:
-    src: tower_config.j2
-    dest: "{{ setupdir_output.files[0].path }}/inventory"
-    owner: "{{ admin_user }}"
-    mode: '0644'
-
 - name: place dev trust cert
   template:
     src: dev-ansible-tower-trust.crt.j2
